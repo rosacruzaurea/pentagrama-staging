@@ -14,12 +14,23 @@ if(catalog){
   const more=catalog.querySelector('[data-more]');
   const fields=[...form.querySelectorAll('input,select')];
   const normalize=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();
+  const MAX_QUERY_LENGTH=300;
+  // The catalog is static: normalize its text once, not for every input word.
+  const searchIndex=new Map(items.map(item=>[item,normalize(item.dataset.search)]));
   let shown=24;
-  const syncFromURL=()=>{const params=new URLSearchParams(location.search);for(const field of fields)field.value=params.get(field.name)||'';};
+  const syncFromURL=()=>{
+    const params=new URLSearchParams(location.search);
+    for(const field of fields){
+      const value=params.get(field.name)||'';
+      field.value=field.name==='q'?value.slice(0,MAX_QUERY_LENGTH):value;
+    }
+  };
   const apply=(updateURL=true)=>{
-    const query=normalize(form.elements.q.value).split(/\s+/).filter(Boolean);
+    // maxlength is not enforced for URL values or programmatic assignments.
+    form.elements.q.value=form.elements.q.value.slice(0,MAX_QUERY_LENGTH);
+    const query=[...new Set(normalize(form.elements.q.value).split(/\s+/).filter(Boolean))];
     const filters=fields.filter(f=>f.name!=='q'&&f.value);
-    const hits=items.filter(item=>query.every(word=>normalize(item.dataset.search).includes(word))&&filters.every(field=>{
+    const hits=items.filter(item=>query.every(word=>searchIndex.get(item).includes(word))&&filters.every(field=>{
       const value=item.dataset[field.name];
       return ['tema','autor'].includes(field.name)?JSON.parse(value||'[]').includes(field.value):value===field.value;
     }));
