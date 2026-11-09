@@ -60,7 +60,7 @@
               article.className = 'content-search-result';
               const link = document.createElement('a');
               link.href = url.href;
-              link.target = '_blank';
+              link.target = '_self';
               link.rel = 'noopener noreferrer';
               link.className = 'gs-title';
               link.textContent = item.titleNoFormatting || item.visibleUrl || url.hostname;
@@ -112,7 +112,7 @@
         results.append(container);
         api.render({div: container, tag: 'searchresults-only', gname: name, attributes: {
           autoSearchOnLoad: false, enableHistory: false, overlayResults: false, as_sitesearch: 'pentagrama.org.br',
-          as_filetype: type, linkTarget: '_blank', enableImageSearch: false,
+          as_filetype: type, linkTarget: '_self', enableImageSearch: false,
           ivt: true
         }});
         elements.set(name, container);
