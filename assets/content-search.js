@@ -47,7 +47,35 @@
           if (window.google?.search?.cse?.element) resolve(window.google.search.cse.element);
           else reject(new Error('Search API unavailable'));
         },
-        searchCallbacks: {web: {rendered: name => {
+        searchCallbacks: {web: {
+          // Official ready callback avoids the provider's eval-based result templates.
+          // Keep provider branding, navigation and advertising configuration intact.
+          ready: (name, query, promos, matches, div) => {
+            div.replaceChildren();
+            for (const item of [...(promos || []), ...(matches || [])]) {
+              let url;
+              try { url = new URL(item.url); } catch { continue; }
+              if (!['https:', 'http:'].includes(url.protocol)) continue;
+              const article = document.createElement('article');
+              article.className = 'content-search-result';
+              const link = document.createElement('a');
+              link.href = url.href;
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer';
+              link.className = 'gs-title';
+              link.textContent = item.titleNoFormatting || item.visibleUrl || url.hostname;
+              const snippet = document.createElement('p');
+              snippet.textContent = item.contentNoFormatting || '';
+              article.append(link, snippet);
+              div.append(article);
+            }
+            if (!div.children.length) {
+              const empty = document.createElement('p');
+              empty.textContent = 'Nenhum resultado encontrado para esta busca.';
+              div.append(empty);
+            }
+            return true;
+          }, rendered: name => {
           if (name === activeName) finish('Busca concluída. Consulte os resultados abaixo.');
         }}}
       };
@@ -83,7 +111,7 @@
         const container = document.createElement('div');
         results.append(container);
         api.render({div: container, tag: 'searchresults-only', gname: name, attributes: {
-          autoSearchOnLoad: false, enableHistory: false, as_sitesearch: 'pentagrama.org.br',
+          autoSearchOnLoad: false, enableHistory: false, overlayResults: false, as_sitesearch: 'pentagrama.org.br',
           as_filetype: type, linkTarget: '_blank', enableImageSearch: false,
           ivt: true
         }});

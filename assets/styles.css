@@ -38,3 +38,7 @@ h1,h2,h3{color:#212121;letter-spacing:0}h2{font-size:32px;line-height:1.35}h3{fo
 /* Content search is loaded only on submission; provider attribution is preserved. */
 .google-search [data-content-status]:not(:empty){margin-top:1rem;font-size:.9rem}.google-search [data-content-fallback]{display:inline-block;margin-top:.7rem;font-size:.85rem}.google-search [data-content-results]{margin-top:1rem;min-width:0;overflow-wrap:anywhere}.google-search .gsc-control-cse{padding:0;border:0;background:transparent}.google-search .gsc-webResult .gsc-result{max-width:100%}
 .demo-notice{padding:1rem;border-left:3px solid var(--gold);background:var(--soft);font-size:.9rem}.demo-result{padding:1.15rem 0;border-top:1px solid var(--line)}.demo-result h2{font-size:1.2rem;margin:.25rem 0 .65rem}.demo-result h2 a{color:#795900}.demo-result>p{font-size:.9rem}.demo-result-path{color:var(--muted);font-size:.75rem!important}
+
+.content-search-result { margin: 1rem 0; overflow-wrap: anywhere; }
+.content-search-result > a { font-weight: 700; }
+.content-search-result > p { margin: .35rem 0 1rem; line-height: 1.5; }
