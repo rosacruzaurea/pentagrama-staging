@@ -42,3 +42,10 @@ h1,h2,h3{color:#212121;letter-spacing:0}h2{font-size:32px;line-height:1.35}h3{fo
 .content-search-result { margin: 1rem 0; overflow-wrap: anywhere; }
 .content-search-result > a { font-weight: 700; }
 .content-search-result > p { margin: .35rem 0 1rem; line-height: 1.5; }
+
+/* Local social icons, with native links and accessible labels. */
+.social-icon{display:block;width:22px;height:22px;flex:none}
+a.social-icon-link{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:10px;text-decoration:none;vertical-align:middle}
+.contact-bar .social-icon-link{padding:6px;min-width:36px;min-height:36px}
+.contact-bar .wrap>span{display:flex;align-items:center;gap:4px}
+.blog-side-box .social-icon-link{width:44px;min-height:44px}
